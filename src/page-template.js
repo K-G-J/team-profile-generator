@@ -1,3 +1,6 @@
+const {employeeData, newEmployee} = require('lib/Start.js')
+
+
 const generateAbout = aboutText => {
     if (!aboutText) {
       return '';

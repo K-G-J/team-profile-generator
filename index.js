@@ -1,124 +1,109 @@
 const inquirer = require('inquirer');
-const {writeFile, copyFile} = require('./utils/generate-site.js');
-const generatePage = require('./src/page-template.js');
-const promptUser = () => {
-    return inquirer.prompt ([
-        {
-            type: 'input',
-            name: 'name',
-            message: "What is the team manager's name? (Required)",
-            validate: nameInput => {
-                if (nameInput) {
-                    return true;
-                } else {
-                    console.log("Please enter the team manager's name!");
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'input',
-            name: 'employeeId',
-            message: 'Enter the employee ID',
-            validate: employeeIdInput => {
-                if (employeeIdInput) {
-                    return true;
-                } else {
-                    console.log('Please enter the employee ID!');
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'input',
-            name: 'email',
-            message: 'Enter the employee email',
-            validate: employeeEmailInput => {
-                if (employeeEmailInput) {
-                    return true;
-                } else {
-                    console.log('Please enter the employee email!');
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'input',
-            name: 'office',
-            message: 'Enter the employee office number',
-            validate: employeeOfficeInput => {
-                if (employeeOfficeInput) {
-                    return true;
-                } else {
-                    console.log('Please enter the employee office number!');
-                    return false;
-                }
-            }
-        },
+const Engineer = require('./lib/Engineer');
+const Intern = require('./lib/Intern');
+const Manager = require('./lib/Manager');
+// const {writeFile, copyFile} = require('./utils/generate-site.js');
+// const generatePage = require('./src/page-template.js');
+
+function init(employeeData) { 
+    if (!employeeData) {
+        employeeData = [];
+    }
+    inquirer.prompt ([
         {
             type: 'checkbox',
-            name: 'addPosition',
-            message: 'Please select a role or finish.',
-            choices: ['Manager', 'Engineer', 'Intern', 'Finish']
+            name: 'role',
+            message: 'Please select a role for the new employee',
+            choices: ['Manager', 'Engineer', 'Intern']
         },
-        {
-            type: 'input',
-            name: 'github',
-            message: "Enter the engineer's GitHub username",
-            When: ({addPosition}) => {
-                if (addPosition === 'Engineer') {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            validate: githubInput => {
-                if (githubInput) {
-                    return true;
-                } else {
-                    console.log("Please enter the engineer's GitHub username!");
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'input',
-            name: 'school',
-            message: "Enter the intern's school",
-            When: ({addPosition}) => {
-                if (addPosition === 'Intern') {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            validate: schoolInput => {
-                if (schoolInput) {
-                    return true;
-                } else {
-                    console.log("Please enter the intern's school!");
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'confirm',
-            name: 'confirmAddEmployee',
-            message: 'Wold you like to enter another employee?',
-            default: false
-        }
     ])
-    .then(answers => {
-        employeeData.push(answers)
-        if (answers.confirmAddEmployee) {
-            return promptUser(employeeData);
-        } else {
-            return employeeData;
+    .then(({role}) => {
+        if ({ role: [ 'Engineer' ] }) {
+            {   this.type = new Engineer()
+                this.engineer.getName();
+                this.engineer.getId();
+                this.engineer.getEmail();
+                this.engineer.getOffice();
+                this.engineer.getRole()
+                this.engineer.getGithub();
+                employeeData.push(this);
+            }
+            inquirer.prompt([
+                {
+                    type: 'confirm',
+                    name: 'confirmAdd',
+                    message: 'Wold you like to enter another employee',
+                    default: false
+                }
+            ])
+            .then(({confirmAdd}) => {
+                if (confirmAdd) {
+                    newEmployee.init(employeeData);
+                } 
+                else {
+                    return (employeeData);
+                }
+            })
         }
-    });
-};
+        if (role === 'Intern') {
+            this.type = new Intern
+            this.name = this.intern.getName();
+            this.id = this.intern.getId();
+            this.email = this.intern.getEmail();
+            this.office = this.intern.getOffice();
+            this.role = this.intern.getRole()
+            this.github = this.intern.getGithub();
+            this.role = this.intern.getRole();
+            this.school = this.intern.getSchool();
+            employeeData.push(this);
+            inquirer.prompt([
+                {
+                    type: 'confirm',
+                    name: 'confirmAdd',
+                    message: 'Wold you like to enter another employee',
+                    default: false
+                }
+            ])
+            .then(({confirmAdd}) => {
+                if (confirmAdd) {
+                    newEmployee.init(employeeData);
+                } 
+                else {
+                    return (employeeData);
+                }
+            })
+        }
+        if (role === 'Manager') {
+            this.type = new Manager
+            this.name = this.manager.getName();
+            this.id = this.manager.getId();
+            this.email = this.manager.getEmail();
+            this.office = this.manager.getOffice();
+            this.role = this.manager.getRole()
+            this.github = this.manager.getGithub();
+            this.role = this.manager.getRole();
+            employeeData.push(this);
+            inquirer.prompt([
+                {
+                    type: 'confirm',
+                    name: 'confirmAdd',
+                    message: 'Wold you like to enter another employee',
+                    default: false
+                }
+            ])
+            .then(({confirmAdd}) => {
+                if (confirmAdd) {
+                    newEmployee.init(employeeData);
+                } 
+                else {
+                    return (employeeData);
+                }
+            })
+        }
+    })
+}
 
-promptUser()
+init()
 // .then (portfolioData => {
 //     return generatePage(portfolioData)
 // })
