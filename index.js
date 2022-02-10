@@ -6,100 +6,86 @@ const Manager = require('./lib/Manager');
 // const {writeFile, copyFile} = require('./utils/generate-site.js');
 // const generatePage = require('./src/page-template.js');
 
-function init(employeeData) { 
-    if (!employeeData) {
-        employeeData = [];
-    }
-    inquirer.prompt(questions.startQuestions)
-    .then((answers) => {
-        if (answers.role === 'Engineer') {
-            let engineer = new Engineer (
-                answers.name,
-                answers.id,
-                answers.email,
-            )
+let employeeData = [];
+function init() {
+    return inquirer.prompt(questions.startQuestions);
+}
+function getEmployeeData(answers) {
+    if (answers.role === 'Engineer') {
+        let engineer = new Engineer (
+            answers.name,
+            answers.id,
+            answers.email,
+            answers.role
+        )
+        return getEngineerData(engineer);
+    } else if (answers.role === 'Intern') {
+        let intern = new Intern (
+            answers.name,
+            answers.id,
+            answers.email,
+            answers.role
+        )
+        return getInternData(intern)
+    } else if (answers.role === 'Manager') {
+        let manager = new Manager (
+            answers.name,
+            answers.id,
+            answers.email,
+            answers.role
+        )
+        return getManagerData(manager)
+    } 
+}
+
+function getEngineerData(engineer) {
+        return new Promise((resolve) => {
+            resolve (
             inquirer.prompt(questions.engineerQuestions)
-            .then((response) => {
-                engineer = { ...engineer, ...response };
-                console.log(engineer)
-                employeeData.push(engineer)
-                inquirer.prompt([
-                    {
-                        type: 'confirm',
-                        name: 'confirmAdd',
-                        message: 'Wold you like to enter another employee',
-                        default: false
-                    }
-                ])
-                .then(({confirmAdd}) => {
-                    if (confirmAdd) {
-                        init(employeeData);
-                    } 
-                    else {
-                        return (employeeData);
-                    }
-            })
-            }) 
-        } else if (answers.role === 'Intern') {
-            let intern = new Intern (
-                answers.name,
-                answers.id,
-                answers.email,
+            .then ((response) => {
+                    engineer = {...engineer, ...response};
+                    // console.log(engineer)
+                    employeeData.push(engineer)
+                }
             )
-            inquirer.prompt(questions.internQuestions)
-            .then((response) => {
-                intern = { ...intern, ...response };
-                console.log(intern)
-                employeeData.push(intern)
-                inquirer.prompt([
-                    {
-                        type: 'confirm',
-                        name: 'confirmAdd',
-                        message: 'Wold you like to enter another employee',
-                        default: false
-                    }
-                ])
-                .then(({confirmAdd}) => {
-                    if (confirmAdd) {
-                        init(employeeData);
-                    } 
-                    else {
-                        return (employeeData);
-                    }
-            })
-            })
-        } else if (answers.role === 'Manager') {
-            let manager = new Manager (
-                answers.name,
-                answers.id,
-                answers.email,
-            )
-            inquirer.prompt(questions.managerQuestions)
-            .then((response) => {
-                manager = { ...manager, ...response };
-                console.log(manager)
-                employeeData.push(manager)
-                inquirer.prompt([
-                    {
-                        type: 'confirm',
-                        name: 'confirmAdd',
-                        message: 'Wold you like to enter another employee',
-                        default: false
-                    }
-                ])
-                .then(({confirmAdd}) => {
-                    if (confirmAdd) {
-                        init(employeeData);
-                    } 
-                    else {
-                        return (employeeData);
-                    }
-            })
-            })
-        }
+        )
     })
 }
-init()
+function getInternData(intern) {
+        return new Promise((resolve) => {
+            resolve (
+            inquirer.prompt(questions.internQuestions)
+            .then ((response) => {
+                    intern = {...intern, ...response};
+                    // console.log(intern)
+                    employeeData.push(intern)
+                }
+            )
+        )
+    })
+}
+function getManagerData(manager) {
+        return new Promise((resolve) => {
+            resolve (
+            inquirer.prompt(questions.managerQuestions)
+            .then ((response) => {
+                    manager = {...manager, ...response};
+                    // console.log(manager)
+                    employeeData.push(manager)
+                }
+            )
+        )
+    })
+}
+function confirm() {
+    return inquirer.prompt(questions.confirmQuestion);
+}
+
+function buildTeam() {
+    init()
+    .then((answers) => getEmployeeData(answers))
+    .then(confirm)
+    .then((response) => response.confirmAdd ? buildTeam() : console.log(employeeData))
 // .then (portfolioData => {
 //     return generatePage(portfolioData)
 // })
@@ -116,3 +102,5 @@ init()
 // .catch (err => {
 //     console.log(err);
 // });
+}
+buildTeam();
