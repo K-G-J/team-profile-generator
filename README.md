@@ -12,3 +12,5 @@ A command line application to create a company profile of employees
     4. run "npm install inquirer"
     5. run "npm install jest"
     6. run "node index"
+
+<img width="615" alt="team-profile-generator" src="https://user-images.githubusercontent.com/91970214/153533325-aa3da255-854a-4241-b595-58b61176b005.png">
