@@ -155,9 +155,9 @@ function buildTeam() {
         if (response.confirmAdd) {
             buildTeam()
             return employeeData
-        } return mockData
+        } return employeeData
     })     
-    .then(mockData => generatePage(mockData))
+    .then(employeeData => generatePage(employeeData))
     .then(pageHTML => {
         return writeFile(pageHTML)
     })
