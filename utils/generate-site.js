@@ -8,7 +8,7 @@ const writeFile = fileContent => {
             }
             resolve({
                 ok: true, 
-                message: 'File created!'
+                message: 'HTML File created!'
             });
         });
     });
@@ -22,7 +22,7 @@ const copyFile = () => {
             }
             resolve ({
                 ok: true,
-                message: 'File copied!'
+                message: 'CSS File copied!'
             });
         });
     });
