@@ -172,4 +172,5 @@ function buildTeam() {
         console.log(err);
     });
 }
+console.log("Welcome to the Team Profile Generator!");
 buildTeam();

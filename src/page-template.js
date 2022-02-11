@@ -16,7 +16,7 @@ function renderManagers(employeeData) {
           </h5>
           <p>ID: ${id}</p>
           <p>${role}</p>
-          <p>Office:  ${office} <i class="fa-solid fa-door-open m-2"></i></p>
+          <p>Office: ${office}<i class="fa-solid fa-door-open m-2"></i></p>
         </div>
       `;
       })
@@ -43,7 +43,7 @@ function renderEngineers(employeeData) {
             </h5>
             <p>ID: ${id}</p>
             <p>${role}</p>
-            <p><a href="https://github.com/${github}">Github</a><i class="fa-brands fa-github m-2"></i></p>
+            <p><a id="github" href="https://github.com/${github}">Github</a><i class="fa-brands fa-github m-2"></i></p>
           </div>
         `;
         })

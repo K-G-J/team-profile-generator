@@ -98,10 +98,12 @@
   
   .employee-email {
     font-size: 1rem;
-    font-style: italic;
+    font-style: normal;
     color: var(--light);
   }
-  
+  #github {
+    color: var(--light);
+  }
   .btn {
     font-size: 1.3rem;
     text-decoration: none;
